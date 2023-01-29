@@ -15,7 +15,7 @@ createApp({
     return {
       products: [],
       tempProduct: {
-        imageUrls: [],
+        imagesUrl: [],
       },
       isNew: false,
     };
@@ -53,17 +53,30 @@ createApp({
         productModal.hide();
       });
     },
+    deleteProduct(){
+      axios.delete(`${site}/api/${api_path}/admin/product/${this.tempProduct.id}`)
+      .then(()=>{
+        this.getProducts();
+        delProductModal.hide();
+      })
+      .catch(err=>{
+        alert(err.data.message);
+      })
+    },
     openModal(status, product) {
       console.log(status);
       if (status === "create") {
         productModal.show();
         this.isNew = true;
         tempProduct: {
-          imageUrls: [];
+          imagesUrl: [];
         }
       } else if (status === "edit") {
         productModal.show();
         this.isNew = false;
+        this.tempProduct = { ...product };
+      } else if (status === "delete"){
+        delProductModal.show();
         this.tempProduct = { ...product };
       }
     },

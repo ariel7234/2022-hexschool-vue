@@ -38,7 +38,7 @@
               <td>
                 <div class="btn-group">
                   <button type="button" class="btn btn-outline-primary btn-sm" @click="openModal('edit', product)">編輯</button>
-                  <button type="button" class="btn btn-outline-danger btn-sm">刪除</button>
+                  <button type="button" class="btn btn-outline-danger btn-sm" @click="openModal('delete', product')">刪除</button>
                 </div>
               </td>
             </tr>
@@ -65,13 +65,20 @@
                     </div>
                     <img class="img-fluid" :src="tempProduct.imageUrl" :alt="tempProduct.content" />
                   </div>
-                  <div>
-                    <button class="btn btn-outline-primary btn-sm d-block w-100">新增圖片</button>
-                  </div>
-                  <div v-else>
-                    <button class="btn btn-outline-danger btn-sm d-block w-100">刪除圖片</button>
+                  <div class="mt-3">
+                    <h4>設置多圖</h4>
+                    <!-- 防呆: 確認imagesUrl是陣列 -->
+                    <div v-if="Array.isArray(tempProduct.imagesUrl)">
+                      <template v-for="(img, key) in tempProduct.imagesUrl" :key="key + 000">
+                        <input type="text" class="form-control" v-model="tempProduct.imagesUrl[key]" />
+                        <img :src="tempProduct.imagesUrl[key]" alt="" class="img-fluid mb-2" />
+                      </template>
+                      <button class="btn btn-outline-primary btn-sm d-block w-100" @click="tempProduct.imagesUrl.push('')" v-if="!tempProduct.imagesUrl.length || tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1 ]">新增圖片</button>
+                      <button class="btn btn-outline-danger btn-sm d-block w-100" @click="tempProduct.imagesUrl.pop()" v-else>刪除圖片</button>
+                    </div>
                   </div>
                 </div>
+
                 <div class="col-sm-8">
                   <div class="mb-3">
                     <label for="title" class="form-label">標題</label>
@@ -140,7 +147,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
-              <button type="button" class="btn btn-danger">確認刪除</button>
+              <button type="button" class="btn btn-danger" @click="deleteProduct(product)">確認刪除</button>
             </div>
           </div>
         </div>
