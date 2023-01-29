@@ -6,10 +6,6 @@ const api_path = "yjchen-vue";
 let productModal = {};
 let delProductModal = {};
 
-// 1. 確認登入
-// 2. 取得產品列表
-// 3. 取得產品細節
-
 createApp({
   data() {
     return {
@@ -34,12 +30,10 @@ createApp({
     },
     getProducts() {
       axios.get(`${site}/api/${api_path}/admin/products`).then((res) => {
-        console.log(res);
         this.products = res.data.products;
       });
     },
     openModal(status, product) {
-      console.log(status);
       if (status === "create") {
         this.tempProduct = {
           imagesUrl: [], // FIXME: 若陣列是空 打api好像不會存到，導致新增的產品若只有設主要圖片，會沒有imagesUrl這個陣列，編輯時會無法設定多圖
@@ -62,9 +56,8 @@ createApp({
         url = `${site}/api/${api_path}/admin/product/${this.tempProduct.id}`;
         method = "put";
       }
-      console.dir(this.tempProduct);
       axios[method](url, { data: this.tempProduct })
-      .then((res) => {
+      .then(() => {
         this.getProducts();
         productModal.hide();
       })
