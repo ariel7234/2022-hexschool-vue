@@ -38,47 +38,50 @@ createApp({
         this.products = res.data.products;
       });
     },
+    openModal(status, product) {
+      console.log(status);
+      if (status === "create") {
+        this.tempProduct = {
+          imagesUrl: [], // FIXME: 若陣列是空 打api好像不會存到，導致新增的產品若只有設主要圖片，會沒有imagesUrl這個陣列，編輯時會無法設定多圖
+        };
+        this.isNew = true;
+        productModal.show();
+      } else if (status === "edit") {
+        this.isNew = false;
+        this.tempProduct = { ...product };
+        productModal.show();
+      } else if (status === "delete") {
+        this.tempProduct = { ...product };
+        delProductModal.show();
+      }
+    },
     updateProduct() {
       let url = `${site}/api/${api_path}/admin/product`;
-      let method = 'post';
+      let method = "post";
       if (!this.isNew) {
         url = `${site}/api/${api_path}/admin/product/${this.tempProduct.id}`;
         method = "put";
       }
-      console.log(url);
+      console.dir(this.tempProduct);
       axios[method](url, { data: this.tempProduct })
       .then((res) => {
-        console.log(res);
         this.getProducts();
         productModal.hide();
-      });
-    },
-    deleteProduct(){
-      axios.delete(`${site}/api/${api_path}/admin/product/${this.tempProduct.id}`)
-      .then(()=>{
-        this.getProducts();
-        delProductModal.hide();
       })
-      .catch(err=>{
-        alert(err.data.message);
+      .catch(err => {
+        alert(err.data.message)
       })
     },
-    openModal(status, product) {
-      console.log(status);
-      if (status === "create") {
-        productModal.show();
-        this.isNew = true;
-        tempProduct: {
-          imagesUrl: [];
-        }
-      } else if (status === "edit") {
-        productModal.show();
-        this.isNew = false;
-        this.tempProduct = { ...product };
-      } else if (status === "delete"){
-        delProductModal.show();
-        this.tempProduct = { ...product };
-      }
+    deleteProduct() {
+      axios
+        .delete(`${site}/api/${api_path}/admin/product/${this.tempProduct.id}`)
+        .then(() => {
+          this.getProducts();
+          delProductModal.hide();
+        })
+        .catch((err) => {
+          alert(err.data.message);
+        });
     },
   },
   mounted() {
