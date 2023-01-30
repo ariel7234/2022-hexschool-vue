@@ -36,7 +36,6 @@ const app = createApp({
       .then((res) => {
         this.products = res.data.products;
         this.page = res.data.pagination;
-        console.log(this.page);
       })
       .catch(err=>{
         alert(err.data.message);
@@ -45,7 +44,7 @@ const app = createApp({
     openModal(status, product) {
       if (status === "create") {
         this.tempProduct = {
-          imagesUrl: [], // FIXME: 若陣列是空 打api好像不會存到，導致新增的產品若只有設主要圖片，會沒有imagesUrl這個陣列，編輯時會無法設定多圖
+          imagesUrl: [],
         };
         this.isNew = true;
         productModal.show();

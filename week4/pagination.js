@@ -17,8 +17,5 @@ export default {
       </a>
     </li>
   </ul>
-</nav>`,
-  mounted() {
-    console.log("page", this.page);
-  },
+</nav>`
 };
