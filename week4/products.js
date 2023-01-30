@@ -7,7 +7,7 @@ const api_path = "yjchen-vue";
 let productModal = {};
 let delProductModal = {};
 
-createApp({
+const app = createApp({
   data() {
     return {
       products: [],
@@ -15,6 +15,7 @@ createApp({
         imagesUrl: [],
       },
       isNew: false,
+      page: {},
     };
   },
   methods: {
@@ -101,4 +102,13 @@ createApp({
     productModal = new bootstrap.Modal(document.getElementById("productModal"));
     delProductModal = new bootstrap.Modal(document.getElementById("delProductModal"));
   },
-}).mount("#app");
+});
+
+app.component("product-modal", {
+  props: ["tempProduct", "updateProduct", "deleteProduct"],
+  template: "#product-modal-template",
+});
+
+app.mount("#app");
+
+

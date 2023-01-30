@@ -27,7 +27,4 @@ createApp({
         });
     },
   },
-  mounted() {
-    console.log("init");
-  },
 }).mount("#app");
